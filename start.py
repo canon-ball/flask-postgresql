@@ -12,7 +12,7 @@ class Day(db.Model):
     text = db.Column(db.String(500), nullable=False)
     temperature = db.Column(db.String(20), nullable=False)
 
-db.create_all()
+#db.create_all()
 
 
 
@@ -49,4 +49,4 @@ def delete_day():
     return render_template('delete_day.html', days=Day.query.all())
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0', port='5000')
