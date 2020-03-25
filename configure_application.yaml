@@ -1,0 +1,31 @@
+---
+
+- name: Copy yaml files 
+  hosts: masters
+
+  tasks:
+  - name: Copy yaml files
+    copy:
+      src: /home/abelkin/abelkin/temperature-yamls
+      dest: /home/vagrant
+
+  - name: Copy curl examples
+    copy:
+      src: /home/abelkin/abelkin/curl_examples
+      dest: /home/vagrant
+
+
+  - name: Configuring Postgresql
+    shell: |
+      oc new-project postgresql
+      oc project postgresql
+      oc new-app -e POSTGRESQL_USER=netcracker -e POSTGRESQL_PASSWORD=111 -e POSTGRESQL_DATABASE=netcracker postgresql
+
+  - name: Starting application
+    shell: |
+      oc new-project temperature
+      oc project temperature
+      oc create -f /home/vagrant/temperature-yamls/temperature-pod.yaml
+      oc create -f /home/vagrant/temperature-yamls/temperature-service.yaml
+      oc create -f /home/vagrant/temperature-yamls/temperature-route.yaml
+
