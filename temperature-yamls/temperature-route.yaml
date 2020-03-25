@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Route
+metadata:
+  name: backend-route
+  namespace: temperature
+  annotations:
+    haproxy.router.openshift.io/timeout: 30s
+spec:
+  host: backend-service.temperature.openshift.example.com
+  to:
+    kind: Service
+    name: backend-service
+    weight: 100
+
