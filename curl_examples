@@ -1,0 +1,7 @@
+curl -d "text=01&temperature=5" -X POST backend-service.temperature.openshift.example.com/add_tmp
+curl -d "text=02&temperature=-9" -X POST backend-service.temperature.openshift.example.com/add_tmp
+curl backend-service.temperature.openshift.example.com/get_days
+curl -d "text=03&temperature=-10" -X POST backend-service.temperature.openshift.example.com/add_tmp
+curl -d "text=03" -X POST backend-service.temperature.openshift.example.com/delete_tmp
+
+
