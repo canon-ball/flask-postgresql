@@ -1,0 +1,57 @@
+[all:vars]
+dns_nameservers=[u'169.254.169.254', u'8.8.8.8']
+
+[OSEv3:children]
+masters
+infra
+nodes
+
+[OSEv3:vars]
+openshift_release=v3.11
+openshift_pkg_version=-3.11.0
+openshift_image_tag=v3.11.0
+
+# Use dnsmasq
+openshift_use_dnsmasq=true
+
+# Disable docker excluder
+enable_docker_excluder=false
+
+# Install the openshift examples
+openshift_install_examples=true
+
+openshift_admin_SHA="{SHA}0DPiKuNIrrVmD8IUCuw1hQxNqZc="
+openshift_master_htpasswd_users={'admin': '{SHA}0DPiKuNIrrVmD8IUCuw1hQxNqZc='}
+
+openshift_master_identity_providers=[{'name': 'htpasswd_auth','login': 'true', 'challenge': 'true','kind': 'HTPasswdPasswordIdentityProvider'}]
+
+openshift_master_cluster_hostname=osh311
+ansible_ssh_user=vagrant
+ansible_become=true
+openshift_deployment_type=origin
+openshift_docker_selinux_enabled=false
+openshift_disable_check='disk_availability,memory_availability,docker_image_availability'
+
+# Enable cockpit
+osm_use_cockpit=false
+
+openshift_cluster_monitoring_operator_install=false
+
+# host group for masters
+[masters]
+master openshift_node_group_name="node-config-master"
+
+# host group for etcd
+[etcd]
+master openshift_node_group_name="node-config-master"
+
+[infra]
+infra openshift_node_group_name="node-config-infra"
+
+# host group for nodes, includes region info
+[nodes]
+master openshift_schedulable=true openshift_node_group_name="node-config-master"
+infra openshift_schedulable=true openshift_node_group_name="node-config-infra"
+node-1 openshift_schedulable=true openshift_node_group_name="node-config-compute"
+node-2 openshift_schedulable=true openshift_node_group_name="node-config-compute"
+
